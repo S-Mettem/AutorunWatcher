@@ -1,0 +1,67 @@
+﻿<Window x:Class="AutorunWatcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutorunWatcher"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        mc:Ignorable="d"
+        StateChanged="Window_StateChanged"
+        x:Name="Window_"
+        Title="Главное рабочее окно - AutorunWatcher"
+        WindowStartupLocation="CenterOwner"
+        Height="450"
+        Width="800"
+        FontSize="14">
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <tb:TaskbarIcon Visibility="Visible"
+                        x:Name="TaskIcon"
+                        ToolTipText="Идет отслеживание планировщика задач"
+                        IconSource="/icons8-восклицательный-знак-48.ico"
+                        TrayLeftMouseDown="TaskIcon_TrayLeftMouseDown"/>
+        <Menu Grid.Row="1">
+            <MenuItem Header="Файл"></MenuItem>
+        </Menu>
+        <Grid Grid.Row="2">
+            <Button Command="{Binding StopTask}"
+                    Content="Остановить"
+                    HorizontalAlignment="Left"
+                    Margin="5"
+                    Width="100" 
+                    Click="Button_Click_Stop"/>
+            <Button Content="Обновить"
+                    HorizontalAlignment="Left"
+                    Margin="115,5,0,5"
+                    Width="100" Click="Button_Click_Refresh"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <DataGrid Margin="0,5,0,0"
+                      AutoGenerateColumns="False"
+                      x:Name="TasksGrid"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Путь" Binding="{Binding Path}"/>
+                    <DataGridTextColumn Header="Следующий запуск" Binding="{Binding NextRunTime, StringFormat=dd.MM.yyyy hh.mm}"/>
+                    <DataGridTextColumn Header="Последний запуск" Binding="{Binding LastRunTime, StringFormat=dd.MM.yyyy hh.mm}"/>
+                    <DataGridTextColumn Header="Состояние" Binding="{Binding State}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <StatusBar Grid.Row="4">
+            <StatusBarItem>
+                <TextBlock Text="Готово!"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="StatusCounterRows" Text="{Binding CounterRows, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=Количество&#x20;строк&#x20;равно&#x20;{0}}"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
